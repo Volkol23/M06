@@ -67,7 +67,7 @@ public class main : MonoBehaviour
 
     public string GetMoney(int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
@@ -85,45 +85,48 @@ public class main : MonoBehaviour
 
     public string GetItems()
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
-
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory.db";
+        Debug.Log("0");
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
-        IDbCommand cmndCount = dbcon.CreateCommand();
-        IDataReader readerCount;
-        string queryCount = "SELECT COUNT(id_item) FROM items";
-        cmndCount.CommandText = queryCount;
-        readerCount = cmndCount.ExecuteReader();
+        Debug.Log("1");
+        //IDbCommand cmndCount = dbcon.CreateCommand();
+        //IDataReader readerCount;
+        //string queryCount = "SELECT COUNT(id_item) FROM items";
+        //cmndCount.CommandText = queryCount;
+        //readerCount = cmndCount.ExecuteReader();
 
-        readerCount.Read();
-        int numItems;
-        int.TryParse(readerCount[0].ToString(), out numItems);
+        //readerCount.Read();
+        //Debug.Log("2");
+        //int numItems;
+        //int.TryParse(readerCount[0].ToString(), out numItems);
 
         IDbCommand cmnd = dbcon.CreateCommand();
         IDataReader reader;
         string query = "SELECT item, price, desc FROM items";
         cmnd.CommandText = query;
         reader = cmnd.ExecuteReader();
+        Debug.Log("3");
+        int i = 1;
 
-        int i = 0;
-        string[] res = new string[numItems];
         string result = "";
         while (reader.Read())
-        { 
-            res = new string[] { reader[i].ToString() };
-            result += reader[i].ToString();
-            result += reader[i+1].ToString();
-            result += reader[i+2].ToString();
-            i++;
+        {
+            result += reader.GetString(0);
+            result += ';';
+            result += reader.GetInt32(1);
+            result += ';';
+            result += reader.GetString(2);
+            result += ';';
         }
-            
+        Debug.Log("4");
         dbcon.Close();
         return result;
     }
 
     public void UpdateMoney(int money, int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
@@ -139,7 +142,7 @@ public class main : MonoBehaviour
 
     public void BuyItem(int item, int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
@@ -155,7 +158,7 @@ public class main : MonoBehaviour
     
     public string GetQuantity(int item, int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
@@ -173,7 +176,7 @@ public class main : MonoBehaviour
 
     public string GetPlayerItems(int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
@@ -191,7 +194,7 @@ public class main : MonoBehaviour
 
     public string GetPlayer(int user)
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/My_Database";
+        string connection = "URI=file:" + Application.persistentDataPath + "/Inventory";
 
         IDbConnection dbcon = new SqliteConnection(connection);
         dbcon.Open();
